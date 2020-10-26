@@ -1,11 +1,11 @@
 # StockHindsight
 
-## build backend server
+## Build Project
 
 docker-compose build
 
-## run backend server 
+## Run Project 
 docker-compose up
 
 ## Django migration
-docker-compose run web python manage.py migrate
+docker-compose run web python backend/manage.py migrate
