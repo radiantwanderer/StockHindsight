@@ -22,14 +22,21 @@ services:
     volumes:
       - my-db:/var/lib/mysql
   web:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    build: ./backend
+    command: python backend/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
     ports:
       - "8000:8000"
     depends_on:
       - db
+  client:
+    stdin_open: true
+    build: ./frontend
+    volumes:
+      - "/app/node_modules"
+    ports:
+      - "3000:3000"
 # Names our volume
 volumes:
   my-db:
