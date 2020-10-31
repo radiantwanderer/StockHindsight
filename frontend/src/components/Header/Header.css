@@ -1,0 +1,12 @@
+.Header {
+  font: Arial Narrow, sans-serif;
+  font-size: 15px;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+  margin-bottom: 10px;
+  background-color: #B0E0E6;
+  color: #fff;
+}
