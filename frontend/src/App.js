@@ -1,10 +1,11 @@
 import React from 'react';
 import { Switch, Route, Link } from "react-router-dom";
-import Header from './components/Header/Header';
 import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
 
-import AddStocks from "./components/AddStocks"
+import AddStocks from "./components/AddStocks";
+import StocksList from "./components/StocksList";
+import Stocks from "./components/Stocks";
 
 function App() {
   return (
@@ -29,7 +30,9 @@ function App() {
 
         <div className="container mt-3">
             <Switch>
+              <Route exact path={["/", "/stocks"]} component={StocksList} />
               <Route exact path="/add" component={AddStocks} />
+              <Route path="/stocks/:id" component={Stocks} />
             </Switch>
         </div>
       </div>
