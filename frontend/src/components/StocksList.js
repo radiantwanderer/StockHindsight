@@ -3,13 +3,20 @@ import StockDataService from "../services/StockService";
 import { Link } from "react-router-dom";
 
 const StocksList = () => {
-    const [stocks, setStocks] = useState([]);
-    const [currentStocks, setCurrentStocks] = useState(null);
+    const [stock, setStock] = useState([]);
+    const [currentStock, setCurrentStock] = useState(null);
     const [currentIndex, setCurrentIndex] = useState(-1);
     const [searchTicker, setSearchTicker] = useState("");
 
     useEffect(() => {
-        retrieveStocks();
+        if (currentStock != null) {
+            console.log("/Stocks/" + currentStock.ticker);
+        }
+
+    }, [currentStock])
+
+    useEffect(() => {
+        retrieveStock();
     }, []);
 
     const onChangeSearchTicker = e => {
@@ -17,10 +24,10 @@ const StocksList = () => {
         setSearchTicker(searchTicker);
     };
 
-    const retrieveStocks = () => {
+    const retrieveStock = () => {
         StockDataService.getAll()
             .then(response => {
-                setStocks(response.data);
+                setStock(response.data);
                 console.log(response.data);
             })
             .catch(e => {
@@ -29,26 +36,28 @@ const StocksList = () => {
     };
 
     const refreshList = () => {
-        retrieveStocks();
-        setCurrentStocks(null);
+        retrieveStock();
+        setCurrentStock(null);
         setCurrentIndex(-1);
     };
 
-    const setActiveStocks = (stocks, index) => {
-        setCurrentStocks(stocks);
+    const setActiveStock = (stock, index) => {
+        setCurrentStock(stock);
         setCurrentIndex(index);
     };
 
     const findByTicker = () => {
         StockDataService.findByTicker(searchTicker)
             .then(response => {
-                setStocks(response.data);
+                setStock(response.data);
                 console.log(response.data);
             })
             .catch(e => {
                 console.log(e);
             });
     };
+
+    useEffect(findByTicker, [searchTicker]);
 
     return (
         <div className="list row">
@@ -73,42 +82,54 @@ const StocksList = () => {
             </div>
           </div>
           <div className="col-md-6">
-            <h4>Stocks List</h4>
+            <h4>Stock List</h4>
 
             <ul className="list-group">
-              {stocks &&
-                stocks.map((stocks, index) => (
+              {stock &&
+                stock.map((stock, index) => (
                   <li
                     className={
                       "list-group-item " + (index === currentIndex ? "active" : "")
                     }
-                    onClick={() => setActiveStocks(stocks, index)}
+                    onClick={() => setActiveStock(stock, index)}
                     key={index}
                   >
-                    {stocks.ticker}
+                    {stock.ticker}
                   </li>
                 ))}
             </ul>
           </div>
           <div className="col-md-6">
-            {currentStocks ? (
+            {currentStock ? (
               <div>
                 <h4>Stock</h4>
                 <div>
                   <label>
                     <strong>Ticker:</strong>
                   </label>{" "}
-                  {currentStocks.ticker}
+                  {currentStock.ticker}
                 </div>
                 <div>
                   <label>
-                    <strong>Number of shares:</strong>
+                    <strong>Company Name:</strong>
                   </label>{" "}
-                  {currentStocks.num_shares}
+                  {currentStock.companyName}
+                </div>
+                <div>
+                  <label>
+                    <strong>Current Price:</strong>
+                  </label>{" "}
+                  {currentStock.currentPrice}
+                </div>
+                <div>
+                  <label>
+                    <strong>Market:</strong>
+                  </label>{" "}
+                  {currentStock.Market}
                 </div>
 
                 <Link
-                  to={"/stocks/" + currentStocks.id}
+                  to={"/Stocks/" + currentStock.ticker}
                   className="badge badge-warning"
                 >
                   Edit

@@ -32,7 +32,7 @@ function App() {
             <Switch>
               <Route exact path={["/", "/stocks"]} component={StocksList} />
               <Route exact path="/add" component={AddStocks} />
-              <Route path="/stocks/:id" component={Stocks} />
+              <Route path="/stocks/:ticker" component={Stocks} />
             </Switch>
         </div>
       </div>

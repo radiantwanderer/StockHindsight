@@ -2,31 +2,37 @@ import React, { useState } from "react";
 import StockDataService from "../services/StockService";
 
 const AddStocks = () => {
-    const initialStocksState = {
+    const initialStockState = {
         id: null,
         ticker: "",
-        num_shares: 0
+        companyName: "",
+        currentPrice: 0.00,
+        Market: ""
     };
-    const [stocks, setStocks] = useState(initialStocksState);
+    const [stock, setStock] = useState(initialStockState);
     const [submitted, setSubmitted] = useState(false);
 
     const handleInputChange = event => {
         const { name, value } = event.target;
-        setStocks({ ...stocks, [name]: value});
+        setStock({ ...stock, [name]: value});
     };
 
-    const saveStocks = () => {
+    const saveStock = () => {
         var data = {
-            ticker: stocks.ticker,
-            num_shares: stocks.num_shares
+            ticker: stock.ticker,
+            companyName: stock.companyName,
+            currentPrice: stock.currentPrice,
+            Market: stock.Market
         };
 
         StockDataService.create(data)
             .then(response => {
-                setStocks({
+                setStock({
                     id: response.data.id,
                     ticker: response.data.ticker,
-                    num_shares: response.data.num_shares
+                    companyName: response.data.companyName,
+                    currentPrice: response.data.currentPrice,
+                    Market: response.data.Market
                 });
                 setSubmitted(true);
                 console.log(response.data);
@@ -36,8 +42,8 @@ const AddStocks = () => {
             });
     };
 
-    const newStocks = () => {
-        setStocks(initialStocksState)
+    const newStock = () => {
+        setStock(initialStockState)
         setSubmitted(false);
     };
 
@@ -46,7 +52,7 @@ const AddStocks = () => {
           {submitted ? (
             <div>
               <h4>You submitted successfully!</h4>
-              <button className="btn btn-success" onClick={newStocks}>
+              <button className="btn btn-success" onClick={newStock}>
                 Add
               </button>
             </div>
@@ -59,26 +65,52 @@ const AddStocks = () => {
                   className="form-control"
                   id="ticker"
                   required
-                  value={stocks.ticker}
+                  value={stock.ticker}
                   onChange={handleInputChange}
                   name="ticker"
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="num_shares">Number of Shares</label>
+                <label htmlFor="num_shares">Company Name</label>
                 <input
-                  type="number"
+                  type="text"
                   className="form-control"
-                  id="num_shares"
+                  id="companyName"
                   required
-                  value={stocks.num_shares}
+                  value={stock.companyName}
                   onChange={handleInputChange}
-                  name="num_shares"
+                  name="companyName"
                 />
               </div>
 
-              <button onClick={saveStocks} className="btn btn-success">
+              <div className="form-group">
+                <label htmlFor="num_shares">Current Price</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="currentPrice"
+                  required
+                  value={stock.currentPrice}
+                  onChange={handleInputChange}
+                  name="currentPrice"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="num_shares">Market</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="Market"
+                  required
+                  value={stock.Market}
+                  onChange={handleInputChange}
+                  name="Market"
+                />
+              </div>
+
+              <button onClick={saveStock} className="btn btn-success">
                 Submit
               </button>
             </div>
