@@ -16,7 +16,9 @@ class StockViewSet(viewsets.ModelViewSet):
         tickers = self.request.query_params.get('ticker', None)
         print(tickers)
         if tickers is not None and tickers != "":
-            queryset = Stock.objects.filter(ticker__icontains=tickers)
+            tickers = tickers + '%'
+            queryset = Stock.objects.raw('SELECT * FROM mbe_stock WHERE ticker LIKE %s', [tickers])
+            #queryset = Stock.objects.filter(ticker__icontains=tickers)
         return queryset
 
 class StockEODViewSet(viewsets.ModelViewSet):
